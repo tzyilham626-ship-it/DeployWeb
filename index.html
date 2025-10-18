@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0f172a;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #e2e8f0;
+        }
+        
+        .container {
+            background: linear-gradient(135deg, #1a2a4a 0%, #0f172a 100%);
+            border: 1px solid #1e3a5f;
+            border-radius: 15px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 100px rgba(59, 130, 246, 0.1);
+            max-width: 700px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        h1 {
+            text-align: center;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #cbd5e1;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .drag-drop-zone {
+            border: 2px dashed #3b82f6;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(59, 130, 246, 0.05);
+            margin-bottom: 15px;
+            pointer-events: auto;
+        }
+        
+        .drag-drop-zone:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #8b5cf6;
+        }
+        
+        .drag-drop-zone.dragover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: #8b5cf6;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            transform: scale(1.02);
+        }
+        
+        .drag-drop-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        .drag-drop-text {
+            color: #3b82f6;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .drag-drop-hint {
+            color: #64748b;
+            font-size: 12px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #1e3a5f;
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.8);
+            color: #e2e8f0;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+        
+        textarea::placeholder {
+            color: #475569;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #1e3a5f;
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.8);
+            color: #e2e8f0;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-copy {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .btn-copy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-download {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+        
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+        }
+        
+        .success-msg {
+            color: #10b981;
+            font-size: 12px;
+            margin-top: 8px;
+            display: none;
+            font-weight: 600;
+        }
+        
+        .error-msg {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 8px;
+            display: none;
+            font-weight: 600;
+        }
+        
+        .file-info {
+            color: #3b82f6;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Encryption</h1>
+        
+        <div class="input-group">
+            <label>Password</label>
+            <input type="text" id="passwordInput" class="password-input" value="Hammtzi" placeholder="Password...">
+        </div>
+        
+        <div class="input-group">
+            <label>Input Text / File</label>
+            <div class="drag-drop-zone" id="dragDropZone">
+                <div class="drag-drop-icon">📁</div>
+                <div class="drag-drop-text">Drag & drop atau klik</div>
+                <div class="drag-drop-hint">Teks, JSON, atau file lainnya</div>
+            </div>
+            <input type="file" id="fileInput" class="file-input">
+            <textarea id="input" placeholder="Atau masukkan teks di sini..."></textarea>
+            <div class="file-info" id="fileInfo"></div>
+        </div>
+        
+        <div class="button-group">
+            <button class="btn-primary" id="encryptBtn">Enkripsi</button>
+            <button class="btn-primary" id="decryptBtn">Dekripsi</button>
+        </div>
+        
+        <div class="input-group">
+            <label>Output</label>
+            <textarea id="output" placeholder="Hasil akan muncul di sini..." readonly></textarea>
+            <div class="success-msg" id="successMsg">✓ Disalin ke clipboard!</div>
+            <div class="error-msg" id="errorMsg"></div>
+        </div>
+        
+        <div class="button-group">
+            <button class="btn-copy" id="copyBtn">Salin</button>
+            <button class="btn-download" id="downloadBtn">Download</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+        let currentFileName = '';
+        
+        // Advanced AES-256 Encryption dengan multiple layers
+        function advancedAesEncrypt(text, password) {
+            // Layer 1: PBKDF2 key derivation dengan 2000 iterasi
+            const key1 = CryptoJS.PBKDF2(password, 'salt1', { 
+                keySize: 256/32, 
+                iterations: 2000 
+            });
+            
+            // Layer 2: First encryption
+            const iv1 = CryptoJS.lib.WordArray.random(128/8);
+            const encrypted1 = CryptoJS.AES.encrypt(text, key1, { iv: iv1 });
+            
+            // Layer 3: Second key derivation
+            const key2 = CryptoJS.PBKDF2(password, 'salt2', { 
+                keySize: 256/32, 
+                iterations: 2000 
+            });
+            
+            // Layer 4: Second encryption
+            const iv2 = CryptoJS.lib.WordArray.random(128/8);
+            const encrypted2 = CryptoJS.AES.encrypt(encrypted1.toString(), key2, { iv: iv2 });
+            
+            // Layer 5: Hash-based checksum
+            const checksum = CryptoJS.SHA256(password + text).toString();
+            
+            // Layer 6: Final combination
+            const result = iv1.toString() + '|' + iv2.toString() + '|' + encrypted2.toString() + '|' + checksum.substring(0, 16);
+            
+            return result;
+        }
+        
+        function advancedAesDecrypt(encrypted, password) {
+            try {
+                const parts = encrypted.split('|');
+                if (parts.length !== 4) throw new Error('Format tidak valid');
+                
+                const iv1 = CryptoJS.enc.Hex.parse(parts[0]);
+                const iv2 = CryptoJS.enc.Hex.parse(parts[1]);
+                const checksum = parts[3];
+                
+                // Reverse Layer 4: Decrypt second
+                const key2 = CryptoJS.PBKDF2(password, 'salt2', { 
+                    keySize: 256/32, 
+                    iterations: 2000 
+                });
+                const decrypted2 = CryptoJS.AES.decrypt(parts[2], key2, { iv: iv2 });
+                
+                // Reverse Layer 2: Decrypt first
+                const key1 = CryptoJS.PBKDF2(password, 'salt1', { 
+                    keySize: 256/32, 
+                    iterations: 2000 
+                });
+                const decrypted1 = CryptoJS.AES.decrypt(decrypted2.toString(CryptoJS.enc.Utf8), key1, { iv: iv1 });
+                const result = decrypted1.toString(CryptoJS.enc.Utf8);
+                
+                if (!result) throw new Error('Password salah atau data terkorupsi');
+                
+                // Verify checksum
+                const newChecksum = CryptoJS.SHA256(password + result).toString().substring(0, 16);
+                if (newChecksum !== checksum) {
+                    throw new Error('Data tidak sesuai, kemungkinan password salah');
+                }
+                
+                return result;
+            } catch (e) {
+                throw new Error('Dekripsi gagal: ' + e.message);
+            }
+        }
+        
+        // Drag and Drop
+        const dragDropZone = document.getElementById('dragDropZone');
+        const fileInput = document.getElementById('fileInput');
+        
+        dragDropZone.addEventListener('click', () => fileInput.click());
+        
+        dragDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragDropZone.classList.add('dragover');
+        });
+        
+        dragDropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragDropZone.classList.remove('dragover');
+        });
+        
+        dragDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragDropZone.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+        
+        function handleFile(file) {
+            const reader = new FileReader();
+            currentFileName = file.name;
+            
+            reader.onload = (e) => {
+                document.getElementById('input').value = e.target.result;
+                document.getElementById('fileInfo').textContent = `📄 ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        document.getElementById('encryptBtn').addEventListener('click', function() {
+            const input = document.getElementById('input').value;
+            const password = document.getElementById('passwordInput').value;
+            const output = document.getElementById('output');
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (!input) {
+                errorMsg.textContent = '⚠️ Masukkan teks terlebih dahulu';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            if (!password) {
+                errorMsg.textContent = '⚠️ Masukkan password terlebih dahulu';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            try {
+                errorMsg.style.display = 'none';
+                output.value = advancedAesEncrypt(input, password);
+            } catch (e) {
+                output.value = '';
+                errorMsg.textContent = '❌ Error: ' + e.message;
+                errorMsg.style.display = 'block';
+            }
+        });
+        
+        document.getElementById('decryptBtn').addEventListener('click', function() {
+            const input = document.getElementById('input').value;
+            const password = document.getElementById('passwordInput').value;
+            const output = document.getElementById('output');
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (!input) {
+                errorMsg.textContent = '⚠️ Masukkan teks terenkripsi terlebih dahulu';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            if (!password) {
+                errorMsg.textContent = '⚠️ Masukkan password terlebih dahulu';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            try {
+                errorMsg.style.display = 'none';
+                output.value = advancedAesDecrypt(input, password);
+            } catch (e) {
+                output.value = '';
+                errorMsg.textContent = '❌ ' + e.message;
+                errorMsg.style.display = 'block';
+            }
+        });
+        
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const output = document.getElementById('output');
+            if (output.value) {
+                navigator.clipboard.writeText(output.value).then(() => {
+                    const msg = document.getElementById('successMsg');
+                    msg.style.display = 'block';
+                    setTimeout(() => {
+                        msg.style.display = 'none';
+                    }, 2000);
+                });
+            }
+        });
+        
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            const output = document.getElementById('output');
+            if (output.value) {
+                const element = document.createElement('a');
+                const file = new Blob([output.value], {type: 'text/plain'});
+                element.href = URL.createObjectURL(file);
+                
+                let filename = currentFileName || 'output';
+                filename = filename.replace(/\.[^/.]+$/, '') + '.enc';
+                
+                element.download = filename;
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+            }
+        });
+    </script>
+</body>
+</html>
