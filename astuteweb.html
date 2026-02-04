@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<script src="https://quge5.com/88/tag.min.js" data-zone="208318" async data-cfasync="false"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTUTECH SERVER</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1929 0%, #1a2942 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Animasi Kelap-Kelip */
+        @keyframes glow {
+            0%, 100% {
+                opacity: 1;
+                filter: brightness(1);
+            }
+            50% {
+                opacity: 0.7;
+                filter: brightness(1.5);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(66, 165, 245, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(66, 165, 245, 0.8);
+            }
+        }
+
+        @keyframes textGlow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(66, 165, 245, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(66, 165, 245, 1);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                max-height: 0;
+                opacity: 0;
+            }
+            to {
+                max-height: 300px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                max-height: 300px;
+                opacity: 1;
+            }
+            to {
+                max-height: 0;
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo-text .highlight {
+            color: #42A5F5;
+            animation: textGlow 2s ease-in-out infinite;
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .status-item {
+            padding: 10px 20px;
+            background: rgba(66, 165, 245, 0.2);
+            border-radius: 25px;
+            font-size: 14px;
+            border: 1px solid rgba(66, 165, 245, 0.3);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .status-online::before {
+            content: "●";
+            color: #4CAF50;
+            margin-right: 8px;
+            animation: glow 1s ease-in-out infinite;
+        }
+
+        .main-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .main-title .highlight {
+            background: linear-gradient(90deg, #42A5F5, #1E88E5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGlow 2s ease-in-out infinite;
+        }
+
+        .download-card {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(25, 118, 210, 0.3));
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid rgba(66, 165, 245, 0.3);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .download-label {
+            font-size: 14px;
+            color: #B3E5FC;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .download-count {
+            font-size: 48px;
+            font-weight: bold;
+            color: #42A5F5;
+            margin-bottom: 20px;
+            animation: textGlow 2s ease-in-out infinite;
+        }
+
+        .subtitle {
+            color: #B3E5FC;
+            font-size: 15px;
+        }
+
+        .button {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #42A5F5, #1E88E5);
+            color: #fff;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(66, 165, 245, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #1976D2, #0D47A1);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(25, 118, 210, 0.3);
+        }
+
+        /* Dropdown Menu untuk Download & Order */
+        .dropdown-menu {
+            max-height: 0;
+            overflow: hidden;
+            margin-bottom: 15px;
+            transition: all 0.4s ease;
+        }
+
+        .dropdown-menu.show {
+            max-height: 300px;
+            animation: slideDown 0.4s ease;
+        }
+
+        .dropdown-option {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 10px;
+            border: 2px solid rgba(66, 165, 245, 0.5);
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, rgba(66, 165, 245, 0.3), rgba(30, 136, 229, 0.3));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .dropdown-option:hover {
+            background: linear-gradient(135deg, rgba(66, 165, 245, 0.5), rgba(30, 136, 229, 0.5));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(66, 165, 245, 0.4);
+        }
+
+        .dropdown-option:active {
+            transform: translateY(0);
+        }
+
+        .bottom-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .bottom-btn {
+            padding: 15px;
+            background: rgba(66, 165, 245, 0.15);
+            border: 1px solid rgba(66, 165, 245, 0.3);
+            border-radius: 12px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .bottom-btn:hover {
+            background: rgba(66, 165, 245, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #78909C;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .main-title {
+                font-size: 28px;
+            }
+            
+            .download-count {
+                font-size: 40px;
+            }
+            
+            .bottom-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-text">
+                    <span class="highlight">ASTUTECH PRIVATE SERVER</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-item status-online">STATUS: ONLINE</div>
+            <div class="status-item">VER: 3.0</div>
+            <div class="status-item">VISIT: 500.000</div>
+        </div>
+
+        <!-- Main Title -->
+        <h1 class="main-title">
+            LATEST <span class="highlight">VERSION</span>
+        </h1>
+
+        <!-- Download Card -->
+        <div class="download-card">
+            <div class="download-label">Berhasil Download</div>
+            <div id="downloadCounter" class="download-count">0</div>
+            <p class="subtitle">KLIK DIBAWAH UNTUK DOWNLOAD.</p>
+        </div>
+
+        <!-- Main Buttons -->
+        <button class="button btn-primary" onclick="toggleDownload()">
+            ⬇ DOWNLOAD
+        </button>
+
+        <!-- Dropdown Menu Download -->
+        <div id="downloadDropdown" class="dropdown-menu">
+            <button class="dropdown-option" onclick="handleDownloadAndroid()">
+                🤖 DOWNLOAD ANDROID
+            </button>
+            <button class="dropdown-option" onclick="handleDownloadIOS()">
+                🍎 DOWNLOAD iOS
+            </button>
+        </div>
+        
+        <button class="button btn-secondary" onclick="handleVerifyID()">
+            🔑 UNLOCK ID (BUAT LOGIN)
+        </button>
+        
+        <button class="button btn-secondary" onclick="toggleOrder()">
+            📱 ORDER (WHATSAPP)
+        </button>
+
+        <!-- Dropdown Menu Order -->
+        <div id="orderDropdown" class="dropdown-menu">
+            <button class="dropdown-option" onclick="handleOrderOption1()">
+                📞 ADMIN 1 (MAULL)
+            </button>
+            <button class="dropdown-option" onclick="handleOrderOption2()">
+                📞 ADMIN 2 (CRAZZ)
+            </button>
+            <button class="dropdown-option" onclick="handleOrderOption3()">
+                📞 ADMIN 3 (FENG)
+            </button>
+        </div>
+        
+        <button class="button btn-secondary" onclick="handleDiscord()">
+            💬 SERVER DISCORD
+        </button>
+
+        <!-- Footer -->
+        <div class="footer">
+            WEBSITE BY HAMM FFID
+        </div>
+    </div>
+
+    <script>
+        // Generate angka random antara min dan max (tidak lebih dari 500 rb)
+        function getRandomDownloadCount() {
+            // Angka random antara 10.000 - 999.999
+            return Math.floor(Math.random() * (500000 - 10000 + 1)) + 10000;
+        }
+
+        // Format angka dengan titik pemisah ribuan
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        // Animasi counter dari 0 ke target number
+        function animateCounter(target) {
+            const counter = document.getElementById('downloadCounter');
+            let current = 0;
+            const increment = target / 100; // Dibagi 100 untuk smooth animation
+            const duration = 2000; // 2 detik
+            const stepTime = duration / 100;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                counter.textContent = formatNumber(Math.floor(current));
+            }, stepTime);
+        }
+
+        // Jalankan animasi saat halaman load
+        window.addEventListener('load', () => {
+            const randomCount = getRandomDownloadCount();
+            animateCounter(randomCount);
+        });
+
+        let isDownloadDropdownOpen = false;
+        let isOrderDropdownOpen = false;
+
+        function toggleDownload() {
+            const downloadDropdown = document.getElementById('downloadDropdown');
+            const orderDropdown = document.getElementById('orderDropdown');
+            
+            isDownloadDropdownOpen = !isDownloadDropdownOpen;
+            
+            // Tutup dropdown order jika terbuka
+            if (isOrderDropdownOpen) {
+                orderDropdown.classList.remove('show');
+                isOrderDropdownOpen = false;
+            }
+            
+            if (isDownloadDropdownOpen) {
+                downloadDropdown.classList.add('show');
+                // Scroll smooth ke dropdown
+                setTimeout(() => {
+                    downloadDropdown.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            } else {
+                downloadDropdown.classList.remove('show');
+            }
+        }
+
+        function toggleOrder() {
+            const orderDropdown = document.getElementById('orderDropdown');
+            const downloadDropdown = document.getElementById('downloadDropdown');
+            
+            isOrderDropdownOpen = !isOrderDropdownOpen;
+            
+            // Tutup dropdown download jika terbuka
+            if (isDownloadDropdownOpen) {
+                downloadDropdown.classList.remove('show');
+                isDownloadDropdownOpen = false;
+            }
+            
+            if (isOrderDropdownOpen) {
+                orderDropdown.classList.add('show');
+                // Scroll smooth ke dropdown
+                setTimeout(() => {
+                    orderDropdown.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            } else {
+                orderDropdown.classList.remove('show');
+            }
+        }
+
+        function handleDownloadAndroid() {
+            window.location.href = 'https://sfl.gl/iwa1db';
+        }
+
+        function handleDownloadIOS() {
+            window.location.href = 'https://sfl.gl/VQ19lLIj';
+        }
+
+        function handleVerifyID() {
+            window.location.href = 'https://www.unlockffbeta.com/';
+        }
+
+        // Fungsi untuk 3 opsi order - GANTI LINK INI SESUAI KEBUTUHAN
+        function handleOrderOption1() {
+            window.location.href = 'https://wa.me/62881037704408?text=bg+order+beta+VIP'; // Link Admin 1
+        }
+
+        function handleOrderOption2() {
+            window.location.href = 'https://wa.me/6285876109242?text=bg+order+beta+VIP'; // Link Admin 2 - GANTI NOMOR
+        }
+
+        function handleOrderOption3() {
+            window.location.href = 'https://wa.me/6285775215729?text=bg+order+beta+VIP'; // Link Admin 3 - GANTI NOMOR
+        }
+
+        function handleDiscord() {
+            window.location.href = 'https://discord.gg/TQtu39j4u';
+        }
+    </script>
+</body>
+</html>
